@@ -1,85 +1,108 @@
-# Gestion des Événements
+# GestEvent
 
-Application web Laravel pour la gestion d'événements, d'experts et d'ateliers.
+Application web de gestion d'événements professionnels, développée avec **Laravel 12**. Elle permet de gérer des événements, les experts qui les animent, et les ateliers associés.
+
+---
+
+## Fonctionnalités
+
+- Créer, consulter et supprimer des **événements** (thème, dates, coût journalier, description)
+- Gérer les **experts** (nom, prénom, email, spécialité) et les associer à des événements
+- Gérer les **ateliers** rattachés à chaque événement
+- Interface responsive avec sidebar de navigation et topbar
 
 ## Stack technique
 
-- PHP 8.2+
-- Laravel 12
-- Base de données relationnelle (MySQL / SQLite)
-
-## Modèles & relations
-
-- **Expert** — a plusieurs événements
-- **Evenement** — appartient à un expert, a plusieurs ateliers
-- **Atelier** — appartient à un événement
+| Couche | Technologie |
+|---|---|
+| Backend | PHP 8.2 / Laravel 12 |
+| Frontend | Blade, CSS natif, Font Awesome 6 |
+| Base de données | MySQL / SQLite |
+| Build | Vite + Node.js |
 
 ## Prérequis
 
 - PHP >= 8.2
 - Composer
-- Node.js & npm
+- Node.js >= 18
 - MySQL ou SQLite
 
 ## Installation
 
 ```bash
-git clone https://github.com/votre-utilisateur/votre-repo.git
-cd votre-repo
+# 1. Cloner le dépôt
+git clone https://github.com/votre-utilisateur/gestevent.git
+cd gestevent
 
+# 2. Installer les dépendances PHP
 composer install
+
+# 3. Configurer l'environnement
 cp .env.example .env
 php artisan key:generate
-```
 
-Configurer la base de données dans `.env` :
+# 4. Configurer la base de données dans .env
+# DB_CONNECTION=mysql
+# DB_DATABASE=gestevent
+# DB_USERNAME=root
+# DB_PASSWORD=
 
-```env
-DB_CONNECTION=mysql
-DB_HOST=127.0.0.1
-DB_PORT=3306
-DB_DATABASE=nom_de_la_base
-DB_USERNAME=utilisateur
-DB_PASSWORD=mot_de_passe
-```
-
-Puis lancer les migrations :
-
-```bash
+# 5. Lancer les migrations
 php artisan migrate
+
+# 6. (Optionnel) Insérer des données de test
+php artisan db:seed
+
+# 7. Installer les dépendances JS et compiler les assets
+npm install && npm run build
 ```
 
-## Lancer le projet
+## Lancer le serveur de développement
 
 ```bash
-php artisan serve
+composer run dev
 ```
 
 L'application sera disponible sur `http://localhost:8000`.
-
-## Routes disponibles
-
-| Méthode | URL                  | Description                        |
-|---------|----------------------|------------------------------------|
-| GET     | `/evenements`        | Liste de tous les événements       |
-| GET     | `/evenements/{id}`   | Détail d'un événement + ateliers   |
-| DELETE  | `/evenements/{id}`   | Supprimer un événement             |
 
 ## Structure du projet
 
 ```
 app/
-├── Http/Controllers/EvenementController.php
+├── Http/Controllers/
+│   ├── EvenementController.php
+│   ├── ExpertController.php
+│   └── AtelierController.php
 ├── Models/
-│   ├── Atelier.php
 │   ├── Evenement.php
-│   └── Expert.php
+│   ├── Expert.php
+│   └── Atelier.php
 database/
-├── migrations/
-│   ├── create_experts_table.php
-│   ├── create_evenements_table.php
-│   └── create_ateliers_table.php
-resources/views/événements/
-├── index.blade.php
-└── show.blade.php
+└── migrations/
+resources/
+└── views/
+    ├── layouts/app.blade.php
+    ├── événements/
+    ├── experts/
+    └── ateliers/
 ```
+
+## Modèle de données
+
+```
+Expert ──< Evenement ──< Atelier
+```
+
+- Un **Expert** peut animer plusieurs événements
+- Un **Événement** contient plusieurs ateliers
+- Un **Atelier** appartient à un seul événement
+
+## Tests
+
+```bash
+php artisan test
+```
+
+## Licence
+
+MIT

@@ -103,6 +103,3 @@ Expert ──< Evenement ──< Atelier
 php artisan test
 ```
 
-## Licence
-
-MIT
